@@ -12,9 +12,9 @@
   if(grid == null || dictionary == null)
     return soultions;
 
-  let N = grid.length;
-  for(let i = 0; i < N; i ++) {
-    if(grid.length[i] =! N) {
+  let a = grid.length;
+  for(let i = 0; i < a; i ++) {
+    if(grid.length[i] =! a) {
       return solutions;
     }
   }
@@ -27,13 +27,13 @@
 
   let solutionSet = new Set();
 
-  let hash = createHashMap(dictionary);
+  let hashMap = createHashMap(dictionary);
 
-  for(let y = 0; y < N; y++) {
-    for(let x = 0; x < N; x++) {
+  for(let x = 0; x < a; x++) {
+    for(let y = 0; y < a; y++) {
       let word = "";
-      let visited = new Array(N).fill(false).map(() => new Array(N).fill(false));
-      findWords(word, y, x, grid, visited, hash, solutionSet);
+      let visited = new Array(a).fill(false).map(() => new Array(a).fill(false));
+      findWords(word, x, y, grid, visited, hashMap, solutionSet);
     }
   }
 
@@ -42,32 +42,32 @@
   return solutions;
 }
 
-findWords = function(word, y, x, grid, visited, hash, solutionSet) {
+findWords = function(word, x, y, grid, visited, hashMap, solutionSet) {
   let adjMatrix = [[-1, 1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]];
   
-  if(y < 0 || x < 0 || y >= grid.length || visited[y][x] == true)
+  if(x < 0 || y < 0 || x >= grid.length || visited[x][y] == true)
     return;
 
-  word += grid[y][x];
-  if(isPrefix(word, hash)) {
-    visited[y][x] = true;
-    if(isWord(word, hash)) {
+  word += grid[x][y];
+  if(isPrefix(word, hashMap)) {
+    visited[x][y] = true;
+    if(isWord(word, hashMap)) {
       if(word.length >= 3)
         solutionSet.add(word);
     }
     for(let i = 0; i < 8; i++) {
-      findWords(word, y + adjMatrix[i][0], x + adjMatrix[i][1], grid, visited, hash, solutionSet);
+      findWords(word, x + adjMatrix[i][0], y + adjMatrix[i][1], grid, visited, hashMap, solutionSet);
     }
   }
-  visited[y][x] = false;
+  visited[x][y] = false;
 }
 
-isPrefix = function(word, hash) {
-  return hash[word] != undefined;
+isPrefix = function(word, hashMap) {
+  return hashMap[word] != undefined;
 }
 
-isWord = function(word, hash) {
-  return hash[word] == 1;
+isWord = function(word, hashMap) {
+  return hashMap[word] == 1;
 }
 
 createHashMap = function(dictionary) {
@@ -116,11 +116,12 @@ isGridValid = function(grid) {
 
 
 var grid = [['T', 'W', 'Y', 'R'],
-              ['E', 'N', 'P', 'H'],
-              ['G', 'Z', 'Qu', 'R'],
-              ['St', 'N', 'T', 'A']];
+            ['E', 'N', 'P', 'H'],
+            ['G', 'Z', 'Qu', 'R'],
+            ['St', 'N', 'T', 'A']];
+
 var dictionary = ['art', 'ego', 'gent', 'get', 'net', 'new', 'newt', 'prat',
-                    'pry', 'qua', 'quart', 'quartz', 'rat', 'tar', 'tarp',
-                    'ten', 'went', 'wet', 'arty', 'egg', 'not', 'quar'];
+                  'pry', 'qua', 'quart', 'quartz', 'rat', 'tar', 'tarp',
+                  'ten', 'went', 'wet', 'arty', 'egg', 'not', 'quar'];
 
 console.log(exports.findAllSolutions(grid, dictionary));
