@@ -1,3 +1,6 @@
+// Andre Williams Starter Project #1
+
+
 /**
  * Given a Boggle board and a dictionary, returns a list of available words in
  * the dictionary present inside of the Boggle board.
@@ -19,21 +22,21 @@
     }
   }
 
-  convertCaseToLower(grid, dictionary);
+  convert_to_lowercase(grid, dictionary);
 
-  if(!isGridValid(grid)) {
+  if(!valid_grid(grid)) {
     return solutions;
   }
 
   let solutionSet = new Set();
 
-  let hashMap = createHashMap(dictionary);
+  let hashMap = create_hash_map(dictionary);
 
   for(let x = 0; x < a; x++) {
     for(let y = 0; y < a; y++) {
       let word = "";
       let visited = new Array(a).fill(false).map(() => new Array(a).fill(false));
-      findWords(word, x, y, grid, visited, hashMap, solutionSet);
+      find_words(word, x, y, grid, visited, hashMap, solutionSet);
     }
   }
 
@@ -42,35 +45,35 @@
   return solutions;
 }
 
-findWords = function(word, x, y, grid, visited, hashMap, solutionSet) {
+find_words = function(word, x, y, grid, visited, hashMap, solutionSet) {
   let adjMatrix = [[-1, 1], [-1, 0], [-1, 1], [0, 1], [1, 1], [1, 0], [1, -1], [0, -1]];
   
   if(x < 0 || y < 0 || x >= grid.length || visited[x][y] == true)
     return;
 
   word += grid[x][y];
-  if(isPrefix(word, hashMap)) {
+  if(prefix(word, hashMap)) {
     visited[x][y] = true;
-    if(isWord(word, hashMap)) {
+    if(valid_word(word, hashMap)) {
       if(word.length >= 3)
         solutionSet.add(word);
     }
     for(let i = 0; i < 8; i++) {
-      findWords(word, x + adjMatrix[i][0], y + adjMatrix[i][1], grid, visited, hashMap, solutionSet);
+      find_words(word, x + adjMatrix[i][0], y + adjMatrix[i][1], grid, visited, hashMap, solutionSet);
     }
   }
   visited[x][y] = false;
 }
 
-isPrefix = function(word, hashMap) {
+prefix = function(word, hashMap) {
   return hashMap[word] != undefined;
 }
 
-isWord = function(word, hashMap) {
+valid_word = function(word, hashMap) {
   return hashMap[word] == 1;
 }
 
-createHashMap = function(dictionary) {
+create_hash_map = function(dictionary) {
   var dict = {};
   for(let i = 0; i < dictionary.length; i++) {
     dict[dictionary[i]] = 1;
@@ -91,7 +94,7 @@ createHashMap = function(dictionary) {
   return dict;
 }
 
-convertCaseToLower = function(grid, dict) {
+convert_to_lowercase = function(grid, dict) {
   for(let i = 0; i < grid.length; i++) {
     for(let j = 0; j < grid[i].length; j++) {
       grid[i][j] = grid[i][j].toLowerCase();
@@ -102,7 +105,7 @@ convertCaseToLower = function(grid, dict) {
   }
 }
 
-isGridValid = function(grid) {
+valid_grid = function(grid) {
   regex = /(st|qu)|[a-prt-z]/;
   for(let i = 0; i < grid.length; i++) {
     for(let j = 0; j < grid.length[i]; j++) {
